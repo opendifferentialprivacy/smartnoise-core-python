@@ -13,6 +13,7 @@ env:
   - PROTO_VERSION=3.11.4
   # Note: Without the IS_CI_BUILD set to True, the python tests will stall
   - IS_CI_BUILD=True
+  - RUST_BACKTRACE=1
   - TWINE_USERNAME=__token__
 
 notifications:
@@ -27,7 +28,7 @@ jobs:
   # - Build pypi OS X wheel
   # -------------------------------------------------------
   - name: Build/Test Python package
-    #if: branch = master
+    if: branch = xskip
     os: osx
     osx_image: xcode11 # python3.7 comes installed with xcode11 image
     language: rust
@@ -69,10 +70,15 @@ jobs:
         on:
           branch: master
           #branch: test-branch
-
+  # -------------------------------------------------------
+  # Linux. All branches: Build & Run python tests
+  # On the master branch:
+  # - Update python docs on Github Pages
+  # -------------------------------------------------------
   - name: Test Python
-    if: branch = xskip-job
+    if: branch = rp-ci-test
     os: linux
+    dist: bionic
     language: rust
     rust: stable
     before_install:
@@ -81,23 +87,19 @@ jobs:
       - python3 -V
       # Install dependencies
       - pip3 -V;
-      - pip3 install -r requirements/sphinx-only.txt;
-      - pip3 install -r requirements/base.txt;
+      - pip3 install -r requirements/dev.txt;
     script:
     # Build python bindings and run tests
-    - export RUST_BACKTRACE=1; python3 -m pip install -e . -v;
+    - python3 -m pip install -e . -v;
     - python3 -m pytest -x -v;
-
     after_success:
     #
     # Build the documentation for gh-pages
     #
     - echo $TRAVIS_BRANCH;
     # switch to master after initial version
-    - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-        cd scripts;
-        bash generate_docs.sh;
-        cd ..;
+    - if [ "$TRAVIS_BRANCH" == "rp-ci-test" ]; then
+        bash scripts/generate_docs.sh;
       fi;
     # -------------------------------------------
     # Deploy the Rust documentation to
