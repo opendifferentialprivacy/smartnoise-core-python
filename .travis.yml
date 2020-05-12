@@ -84,13 +84,15 @@ jobs:
     before_install:
       # Python + sphinx for generating python documentation
       - sudo apt-get -y install python3-pip python-dev
-      - python3 -V
-      # Install dependencies
-      - pip3 -V;
-      - pip3 install -r requirements/dev.txt;
+      - pip3 install -U setuptools
+      - python3 -V; pip3 -V   # for debugging
+      - python3 -m pip install --upgrade
+      - python3 -m pip install -r requirements/dev.txt;
     script:
     # Build python bindings and run tests
-    - python3 -m pip install -e . -v;
+    - bash scripts/ci-osx_build_wheel.sh;
+    - python3 scripts/generate_code.py
+    #- python3 -m pip install -e . -v;
     - python3 -m pytest -x -v;
     after_success:
     #
