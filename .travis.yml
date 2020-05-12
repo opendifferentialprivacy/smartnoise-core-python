@@ -91,7 +91,8 @@ jobs:
     script:
     # Build python bindings and run tests
     - bash scripts/clean.sh
-    #- python3 scripts/code_generation.py
+    - python3 scripts/code_generation.py
+    - export PYTHONPATH=./opendp:./opendp/whitenoise:./opendp/whitenoise/core:$PYTHONPATH
     - echo $(ls opendp/)
     - echo $(ls opendp/whitenoise/)
     - echo $(ls opendp/whitenoise/core)
