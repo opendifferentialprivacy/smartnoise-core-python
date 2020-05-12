@@ -92,9 +92,9 @@ jobs:
     # Build python bindings and run tests
     - bash scripts/clean.sh
     #- python3 scripts/code_generation.py
-    - echo "ls opendp/"
-    - echo "ls opendp/whitenoise/"
-    - echo "ls opendp/whitenoise/core"
+    - echo $(ls opendp/)
+    - echo $(ls opendp/whitenoise/)
+    - echo $(ls opendp/whitenoise/core)
     - python3 -c "import sys; print(sys.path)"
     #- python3 scripts/generate_code.py
     #- python3 -m pip install -e . -v;
