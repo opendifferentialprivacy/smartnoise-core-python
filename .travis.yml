@@ -87,11 +87,11 @@ jobs:
       - pip3 install -U setuptools
       - python3 -V; pip3 -V   # for debugging
       - python3 -m pip install --upgrade pip
-      - python3 -m pip install -r requirements/dev.txt;
+      - pip3 install -r requirements/ci-osx_build.txt
     script:
     # Build python bindings and run tests
-    - bash scripts/clean.sh
-    - python3 scripts/code_generation.py
+    - bash scripts/ci-osx_build_wheel.sh;
+    #- python3 scripts/code_generation.py
     - export PYTHONPATH=./opendp:./opendp/whitenoise:./opendp/whitenoise/core:$PYTHONPATH
     - echo $(ls opendp/)
     - echo $(ls opendp/whitenoise/)
