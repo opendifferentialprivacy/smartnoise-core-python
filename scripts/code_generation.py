@@ -215,7 +215,7 @@ variant_message_map = %s""" % (json.dumps(variant_message_map, indent=4))
         generated_map_file.write(map_text)
     print('    - file written: ', variant_message_map_path)
 
-if __name__ == '__main__':
-    build_rust_binaries()
-    build_python_protobufs()
-    build_python_components()
+#if __name__ == '__main__':
+build_rust_binaries()
+build_python_protobufs()
+build_python_components()
